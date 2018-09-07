@@ -1,2 +1,2 @@
 # emmpy
-A Python implementation of the effective mass model (EMM).  The EMM can be used to model the experimental Seebeck coefficient and conductivity of semiconductors using the Boltzmann transport framework.
+A Python implementation of the effective mass model (EMM).  The EMM is usefull for modeling the experimental Seebeck coefficient and conductivity of semiconductors. This implementation uses the notation used in https://www.nature.com/articles/nmat4784.
