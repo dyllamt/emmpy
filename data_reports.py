@@ -1,3 +1,3 @@
 '''
-Functions that visualize transport properties in plots.
+Functions in this module summarize transport data in plots.
 '''
