@@ -23,6 +23,8 @@ More information on this model can be found at
 https://www.nature.com/articles/nmat4784
 '''
 
+import numpy as np
+from scipy.optimize import minimize
 from fdint import fdk  # function that implements Fermi-Dirac integrals
 
 constant = {'e': 1.60217662e-19,  # physical constants
@@ -33,12 +35,12 @@ constant = {'e': 1.60217662e-19,  # physical constants
             'hbar': 1.054571800e-34}
 
 
-def conductivity(cp, s, sigma_E_0):
+def model_conductivity(cp, s, sigma_E_0):
     '''
     returns the electrical conductivity (S/m)
     
     Args:
-      cp: (float/ndarray) reducted chemical potential, unitless
+      cp: (float/ndarray) reduced chemical potential, unitless
       s: (int) energy exponent restricted to integer/half-integer, unitless
       sigma_E_0: (float) powerlaw prefactor, S/m
       
@@ -51,12 +53,12 @@ def conductivity(cp, s, sigma_E_0):
       return sigma_E_0 * s * fdk(s - 1, )
 
 
-def seebeck(cp, s):
+def model_seebeck(cp, s):
     '''
     returns the seebeck coeficient (V/K)
     
     Args:
-      cp: (float/ndarray) reducted chemical potential, unitless
+      cp: (float/ndarray) reduced chemical potential, unitless
       s: (int) energy exponent restricted to integer/half-integer, unitless
       
     Returns: (float/ndarray)
@@ -68,3 +70,24 @@ def seebeck(cp, s):
     else:
         return constant['k'] / constant['e'] * (((s + 1.) * fdk(s, cp) / s /
                                                  fdk(s - 1, cp)) - cp)
+
+
+def extract_transport_function(seebeck, conductivity, temperature, s=1):
+    '''
+    given an assumption of the transport mechanism (knowledge of s),
+    the transport function can be extracted from Seebeck-conductivity data.
+    minimizing the absolute error is used to find the optimal result
+    
+    Args:
+      seebeck: (float) the Seebeck coefficient, V/K
+      conductivity: (float) electrical conductivity, S/m
+      temperature: (float) the absolute temperature, K
+      
+    Returns: (float) the transport function prefactor sigma_E_0, S/m
+    '''
+
+    cp = minimize(lambda cp: np.abs(model_seebeck(cp, s) - np.abs(seebeck)),
+                  method='Nelder-Mead', x0=[0.]).x[0]
+    return minimize(lambda sigma_E_0: np.abs(model_conductivity(cp, s, sigma_E_0) -
+                                             conductivity),
+                    method='Nelder-Mead', x0=[0.]).x[0]
