@@ -1,26 +1,13 @@
-# Maxwell T. Dylla
-# Northwestern University
-# M-Dylla@u.northwestern.edu
-
-
 '''
-This module computes the theoretical transport coeficients of semiconductors.
-
-The model assumes that there is an underlying transport function (sigma_E),
-which is a powerlaw in energy space. The powerlaw exponent (s) is indicitive of
-the charge transport mechanism. For example, s=1 corresponds to band transport
-limited by non-polar phonon scattering. The powerlaw prefactor (sigma_E_0)
-indicates the "quality" of transport.
-
-Every transport coefficient is a function of the reduced chemical potential
-(cp), which is the chemical potential (mu) divided by boltzmann's constant and
-temperature (mu/kT).
-
-The reduced chemical potential (cp) is unitless, the exponent (s) is unitless,
-and the prefactor (sigma_E_0) has the same units as conductivity (S/m).
+Functions in this module compute "data-point" level transport properties.
 
 More information on this model can be found at 
 https://www.nature.com/articles/nmat4784
+
+Model variables:
+  reduced chemical potential (cp) unitless (mu/kT)
+  transport function exponent (s) unitless
+  transport function prefactor (sigma_E_0) same units as conductivity (S/m)
 '''
 
 import numpy as np
@@ -75,8 +62,8 @@ def model_seebeck(cp, s):
 def extract_transport_function(seebeck, conductivity, temperature, s=1):
     '''
     given an assumption of the transport mechanism (knowledge of s),
-    the transport function can be extracted from Seebeck-conductivity data.
-    minimizing the absolute error is used to find the optimal result
+    the transport function can be extracted from Seebeck-conductivity data
+    on a SINGLE sample. optimium is found by minimizing the absolute error
     
     Args:
       seebeck: (float) the Seebeck coefficient, V/K
