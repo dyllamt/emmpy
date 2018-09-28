@@ -15,11 +15,7 @@ from scipy.optimize import minimize
 from fdint import fdk  # function that implements Fermi-Dirac integrals
 
 constant = {'e': 1.60217662e-19,  # physical constants
-            'k': 1.38064852e-23,
-            'h': 6.62607004e-34,
-            'm_e': 9.10938356e-31,
-            'pi': 3.14159265,
-            'hbar': 1.054571800e-34}
+            'k': 1.38064852e-23}
 
 
 def model_conductivity(cp, s, sigma_E_0):
