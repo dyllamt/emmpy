@@ -37,16 +37,16 @@ def temperature_analysis(seebecks, conductivities, temperatures, s=1):
     temperature analysis is carried out for a single sample
     the temperature dependence of the transport function is informative
     when checking for multi-band behavior or strange scattering mechanisms
-    
+
     Args:
       seebecks: ([float]) the Seebeck coefficients, V/K
       conductivities: ([float]) electrical conductivities, S/m
       temperatures: ([float]) the absolute temperatures, K
       s: (int|half-integer) assumption of the transport exponent (mechanism)
-    
+
     Returns: ([float]) transport function prefactors sigma_E_0, S/m
     '''
-    
+
     trans_funcs = []
     for seeb, cond, temp in zip(seebecks, conductivities, temperatures):
         trans_funcs.append(
