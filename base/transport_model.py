@@ -1,18 +1,17 @@
-'''
-Functions in this module compute "data-point" level transport properties.
+from fdint import fdk  # function that implements Fermi-Dirac integrals
 
-More information on this model can be found at
-https://www.nature.com/articles/nmat4784
+import numpy as np
+
+'''
+this module implements basic functions for transport coefficients, which are
+computed using the Fermi-Dirac integrals. more information on this model can be
+found at: https://www.nature.com/articles/nmat4784
 
 Model variables:
   reduced chemical potential (cp) unitless (mu/kT)
   transport function exponent (s) unitless
   transport function prefactor (sigma_E_0) same units as conductivity (S/m)
 '''
-
-import numpy as np
-from scipy.optimize import minimize
-from fdint import fdk  # function that implements Fermi-Dirac integrals
 
 constant = {'e': 1.60217662e-19,  # physical constants
             'k': 1.38064852e-23}
@@ -53,24 +52,3 @@ def model_seebeck(cp, s):
     else:
         return constant['k'] / constant['e'] * (((s + 1.) * fdk(s, cp) / s /
                                                  fdk(s - 1, cp)) - cp)
-
-
-def extract_transport_function(seebeck, conductivity, temperature, s=1):
-    '''
-    given an assumption of the transport mechanism (knowledge of s),
-    the transport function can be extracted from Seebeck-conductivity data
-    on a SINGLE sample. optimium is found by minimizing the absolute error
-
-    Args:
-      seebeck: (float) the Seebeck coefficient, V/K
-      conductivity: (float) electrical conductivity, S/m
-      temperature: (float) the absolute temperature, K
-
-    Returns: (float) the transport function prefactor sigma_E_0, S/m
-    '''
-
-    cp = minimize(lambda cp: np.abs(model_seebeck(cp, s) - np.abs(seebeck)),
-                  method='Nelder-Mead', x0=[0.]).x[0]
-    return minimize(lambda sigma_E_0: np.abs(
-        model_conductivity(cp, s, sigma_E_0) - conductivity),
-        method='Nelder-Mead', x0=[0.]).x[0]
