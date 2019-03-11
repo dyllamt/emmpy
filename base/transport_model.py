@@ -32,7 +32,7 @@ def model_conductivity(cp, s, sigma_E_0):
     if s == 0:  # s=0 requires analytic simplification
         return sigma_E_0 / (1. + np.exp(-cp))
     else:
-        return sigma_E_0 * s * fdk(s - 1, )
+        return sigma_E_0 * s * fdk(s - 1, cp)
 
 
 def model_seebeck(cp, s):
