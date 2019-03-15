@@ -1,5 +1,5 @@
-from semitransport.base.transport_model import model_conductivity,\
-    model_seebeck
+from semitransport.base.powerlaw_model import powerlaw_conductivity,\
+    powerlaw_seebeck
 
 from os import listdir
 from scipy.optimize import minimize
@@ -96,10 +96,10 @@ class Sample(object):
         Returns: (float) the transport function prefactor sigma_E_0, S/m
         '''
         cp = minimize(
-            lambda cp: np.abs(model_seebeck(cp, s) - np.abs(seebeck)),
+            lambda cp: np.abs(powerlaw_seebeck(cp, s) - np.abs(seebeck)),
             method='Nelder-Mead', x0=[0.]).x[0]
         return minimize(lambda sigma_E_0: np.abs(
-            model_conductivity(cp, s, sigma_E_0) - conductivity),
+            powerlaw_conductivity(cp, s, sigma_E_0) - conductivity),
             method='Nelder-Mead', x0=[0.]).x[0]
 
     @staticmethod

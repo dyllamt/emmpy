@@ -17,7 +17,7 @@ constant = {'e': 1.60217662e-19,  # physical constants
             'k': 1.38064852e-23}
 
 
-def model_conductivity(cp, s, sigma_E_0):
+def powerlaw_conductivity(cp, s, sigma_E_0):
     '''
     returns the electrical conductivity (S/m)
 
@@ -35,7 +35,7 @@ def model_conductivity(cp, s, sigma_E_0):
         return sigma_E_0 * s * fdk(s - 1, cp)
 
 
-def model_seebeck(cp, s):
+def powerlaw_seebeck(cp, s):
     '''
     returns the seebeck coeficient (V/K)
 

@@ -10,4 +10,4 @@ setup(name='semitransport',
       license='MIT',
       packages=find_packages(),
       install_requires=['numpy', 'scipy', 'fdint'],
-      long_description=open('readme.md').read())
+      long_description=open('README.md').read())
