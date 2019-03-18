@@ -97,7 +97,7 @@ class Sample(object):
         else:
             effective_masses = None
 
-        return (transport_functions, effective_masses)
+        return (temperatures, transport_functions, effective_masses)
 
     @classmethod
     def from_csv(cls, name, path, carrier_density=None):

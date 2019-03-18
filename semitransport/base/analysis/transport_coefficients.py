@@ -1,4 +1,4 @@
-from semitransport.base.powerlaw_model import powerlaw_conductivity,\
+from semitransport.base.models.powerlaw_model import powerlaw_conductivity,\
     powerlaw_seebeck
 from semitransport.base.models.sphere_model import sphere_seebeck,\
     sphere_carriers, constant
